@@ -1,1 +1,2 @@
-# IA_2015_1
+## INF01070 Inteligência Artificial
+### Projetos do Curso
