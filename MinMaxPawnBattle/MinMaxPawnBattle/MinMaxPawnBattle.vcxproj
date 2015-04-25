@@ -15,12 +15,14 @@
     <ClCompile Include="source\ChessBoard.cpp" />
     <ClCompile Include="source\LiacBot.cpp" />
     <ClCompile Include="source\main.cpp" />
+    <ClCompile Include="source\Piece.cpp" />
     <ClCompile Include="source\RandomBot.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\BoardState.hpp" />
     <ClInclude Include="source\ChessBoard.hpp" />
     <ClInclude Include="source\LiacBot.hpp" />
+    <ClInclude Include="source\Piece.hpp" />
     <ClInclude Include="source\RandomBot.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

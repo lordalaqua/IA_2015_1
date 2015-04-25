@@ -15,6 +15,7 @@ RandomBot::~RandomBot()
 void RandomBot::onMove(BoardState state)
 {
     /* Dummy test to check if moves are being sent to application. */
+    std::cout << state.board << std::endl;
     const int WHITE = 1;
     if (state.who_moves == WHITE)
         sendMove({ 1, 0 }, { 2, 0 });

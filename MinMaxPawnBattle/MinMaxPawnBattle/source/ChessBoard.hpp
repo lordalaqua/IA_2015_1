@@ -2,7 +2,7 @@
 #define CHESSBOARD_HPP_
 
 #include <bitset>
-#include <vector>
+#include "Piece.hpp"
 #include "BoardState.hpp"
 
 // Chess Board representation, since we are playing Battle of the Pawns, some
@@ -16,19 +16,14 @@ public:
     ~ChessBoard() {};
 
 public:
-    std::bitset<64> black_pawns;
-    std::bitset<64> black_knights;
-    //std::bitset<64> black_towers;
-    //std::bitset<64> black_bishops;
-    std::bitset<64> black_queen;
-    //std::bitset<64> black_king;
+    static const int BOARD_SIZE = 64;
+    const std::bitset<BOARD_SIZE>& black(Piece::Type type) { return black_[type]; }
+    const std::bitset<BOARD_SIZE>& white(Piece::Type type) { return white_[type]; }
 
-	std::bitset<64> white_pawns;
-	std::bitset<64> white_knights;
-    //std::bitset<64> white_towers;
-    //std::bitset<64> white_bishops;
-	std::bitset<64> white_queen;
-    //std::bitset<64> white_king;
+private:
+    std::bitset<BOARD_SIZE> black_[Piece::Type::TOTAL];
+    std::bitset<BOARD_SIZE> white_[Piece::Type::TOTAL];
+
 };
 
 #endif /*CHESSBOARD_HPP_*/

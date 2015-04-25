@@ -3,7 +3,8 @@
 bool LiacBot::run(std::string name /*= "NamelessBot"*/, int port /*= 50100*/, std::string ip /*= "127.0.0.1"*/)
 {
     name_ = name;
-    connectTCPSocket(port, ip);
+    if (!connectTCPSocket(port, ip))
+        std::cout << "Error opening TCP socket." << std::endl;
     sendName();
     while (receiveState())
     {
