@@ -73,13 +73,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\MinMaxPawnBattle\source\BitOperations.cpp" />
     <ClCompile Include="..\MinMaxPawnBattle\source\BoardState.cpp" />
     <ClCompile Include="..\MinMaxPawnBattle\source\ChessBoard.cpp" />
+    <ClCompile Include="BitOperations-test.cpp" />
     <ClCompile Include="BoardState-test.cpp" />
     <ClCompile Include="ChessBoard-test.cpp" />
     <ClCompile Include="main-test.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\MinMaxPawnBattle\source\BitOperations.hpp" />
     <ClInclude Include="..\MinMaxPawnBattle\source\BoardState.hpp" />
     <ClInclude Include="..\MinMaxPawnBattle\source\ChessBoard.hpp" />
   </ItemGroup>

@@ -1,27 +1,22 @@
 #ifndef Piece_h__
 #define Piece_h__
 
-class Piece
+namespace Piece
 {
-public:
     enum Type
     {
         PAWN = 0,
         KNIGHT,
-        //TOWER,    // not used in pawn battle to be played
-        //BISHOP,   // not used in pawn battle to be played
         QUEEN,
-        //KING      // not used in pawn battle to be played
-        TOTAL
+        NUM_TYPES
     };
+
     enum Color
     {
-        BLACK,
-        WHITE
+        BLACK = 0,
+        WHITE,
+        NUM_COLORS
     };
-public:
-    Color color;
-    Type type;
 };
 
 #endif // Piece_h__

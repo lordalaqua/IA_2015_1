@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="source\BitOperations.cpp" />
     <ClCompile Include="source\BoardState.cpp" />
     <ClCompile Include="source\ChessBoard.cpp" />
     <ClCompile Include="source\LiacBot.cpp" />
@@ -19,6 +20,7 @@
     <ClCompile Include="source\RandomBot.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="source\BitOperations.hpp" />
     <ClInclude Include="source\BoardState.hpp" />
     <ClInclude Include="source\ChessBoard.hpp" />
     <ClInclude Include="source\LiacBot.hpp" />

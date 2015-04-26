@@ -26,12 +26,21 @@
     <ClCompile Include="..\MinMaxPawnBattle\source\ChessBoard.cpp">
       <Filter>Project Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\MinMaxPawnBattle\source\BitOperations.cpp">
+      <Filter>Project Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BitOperations-test.cpp">
+      <Filter>Test Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\MinMaxPawnBattle\source\BoardState.hpp">
       <Filter>Project Files</Filter>
     </ClInclude>
     <ClInclude Include="..\MinMaxPawnBattle\source\ChessBoard.hpp">
+      <Filter>Project Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\MinMaxPawnBattle\source\BitOperations.hpp">
       <Filter>Project Files</Filter>
     </ClInclude>
   </ItemGroup>
