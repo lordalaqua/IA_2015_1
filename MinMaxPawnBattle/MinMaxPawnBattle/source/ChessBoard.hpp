@@ -11,33 +11,29 @@
 
 class ChessBoard
 {
-private:
-    static const int BOARD_SIZE = 64;
 public:
-    ChessBoard(const ChessBoard& other) 
-    {
-        for (int i = 0; i < Piece::NUM_COLORS; ++i)
-        {
-            for (int j = 0; j < Piece::NUM_TYPES; ++j)
-            {
-                board_[i][j] = other.board_[i][j];
-            }
-        }
-    };
+    ChessBoard(const ChessBoard& other);
     ChessBoard(const std::string& board);
     std::vector<ChessBoard> generateMoves(Piece::Color team);
+
+    int countPieces(Piece::Color color, Piece::Type type);
+    int countPieces(Piece::Color color);
     
-    const std::bitset<BOARD_SIZE>& operator()(Piece::Color color, Piece::Type type) const { return board_[color][type]; }
+    const std::bitset<64>& operator()(Piece::Color color, Piece::Type type) const;
+    std::bitset<64> operator()(Piece::Color color) const;
+    std::bitset<64> occupied() const;
 private:
-    void generateMovesFor(Piece::Type type, Piece::Color team, const std::vector<ChessBoard>& moves);
-    void generatePawnMoves(Piece::Color team, const std::vector<ChessBoard>& moves);
-    void generateKnightMoves(Piece::Color team, const std::vector<ChessBoard>& moves);
-    void generateQueenMoves(Piece::Color team, const std::vector<ChessBoard>& moves);
+    void generatePawnMoves(Piece::Color team, std::vector<ChessBoard>& moves);
+    void generateKnightMoves(Piece::Color team, std::vector<ChessBoard>& moves);
+    void generateQueenMoves(Piece::Color team, std::vector<ChessBoard>& moves);
+
+    ChessBoard& makeMove(Piece::Color team, Piece::Type type, int from, int to);
+    ChessBoard& makeCapture(Piece::Color team, Piece::Type type, int from, int to);
+    void setFromTo(int from, int to);
 private:
-    std::bitset<BOARD_SIZE> board_[Piece::NUM_COLORS][Piece::NUM_TYPES];
+    std::bitset<64> board_[Piece::NUM_COLORS][Piece::NUM_TYPES];
     std::pair<int, int> from_;
     std::pair<int, int> to_;
-    static const int BITSCAN_INDEX[64];
 };
 
 #endif /*CHESSBOARD_HPP_*/
