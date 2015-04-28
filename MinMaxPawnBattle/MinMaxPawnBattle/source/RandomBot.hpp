@@ -1,16 +1,16 @@
-#pragma once
+#ifndef RandomBot_h__
+#define RandomBot_h__
 #include "LiacBot.hpp"
 
-/* Bot that chooses one of possible moves at random. */
+/* Bot that chooses one of all possible moves at random. */
 
 class RandomBot : public LiacBot
 {
 public:
     RandomBot();
-    ~RandomBot();
-
 private:
     virtual void onMove(BoardState state) override;
     virtual void onGameOver(BoardState state) override;
 };
 
+#endif // RandomBot_h__

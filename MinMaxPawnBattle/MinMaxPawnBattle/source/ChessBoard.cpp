@@ -1,5 +1,6 @@
 #include "ChessBoard.hpp"
 #include "BitOperations.hpp"
+#include <iostream>
 
 ChessBoard::ChessBoard(const ChessBoard& other)
 {
@@ -132,35 +133,52 @@ void ChessBoard::generatePawnMoves(Piece::Color team, std::vector<ChessBoard>& m
         int push_pos = current_index + row_increment;
         int double_push_pos = push_pos + row_increment;
         int left_capture_pos = push_pos - 1;
+        int left_x = push_pos % 8 - 1;
         int right_capture_pos = push_pos + 1;
+        int right_x = push_pos % 8 + 1;
 
         // Normal push
-        if (occupied_tiles[push_pos] == 0)
+        if (0 <= push_pos && push_pos < 64)
         {
-            moves.push_back(ChessBoard(*this).makeMove(team, Piece::PAWN, 
-                current_index, push_pos));
+            if (occupied_tiles[push_pos] == 0)
+            {
+                moves.push_back(ChessBoard(*this).makeMove(team, Piece::PAWN,
+                    current_index, push_pos));
+            }
         }
         // Captures
-        if (enemy_tiles[left_capture_pos] == 1)
+        if (0 <= left_capture_pos && left_capture_pos < 64 
+            && 0 <= left_x && left_x < 8)
         {
-            moves.push_back(ChessBoard(*this).makeCapture(team, Piece::PAWN, 
-                current_index, left_capture_pos));
+            if (enemy_tiles[left_capture_pos] == 1)
+            {
+                moves.push_back(ChessBoard(*this).makeCapture(team, Piece::PAWN,
+                    current_index, left_capture_pos));
+            }
         }
-        if (enemy_tiles[right_capture_pos] == 1)
+        if (0 <= right_capture_pos && right_capture_pos < 64 
+            && 0 <= right_x && right_x < 8)
         {
-            moves.push_back(ChessBoard(*this).makeCapture(team, Piece::PAWN, 
-                current_index, right_capture_pos));
+            if (enemy_tiles[right_capture_pos] == 1)
+            {
+                moves.push_back(ChessBoard(*this).makeCapture(team, Piece::PAWN,
+                    current_index, right_capture_pos));
+            }
         }
 
         // Double push move, check if pawn is in initial position
-        if ((team == Piece::WHITE && (current_index <= 15)) ||
-            (team == Piece::BLACK && (current_index >= 48)))
+        if (0 <= push_pos && push_pos < 64
+            && 0 <= double_push_pos && double_push_pos < 64)
         {
-            if (occupied_tiles[push_pos] == 0 &&
-                occupied_tiles[double_push_pos] == 0)
+            if ((team == Piece::WHITE && (current_index <= 15)) ||
+                (team == Piece::BLACK && (current_index >= 48)))
             {
-                moves.push_back(ChessBoard(*this).makeMove(team, Piece::PAWN, 
-                    current_index, double_push_pos));
+                if (occupied_tiles[push_pos] == 0 &&
+                    occupied_tiles[double_push_pos] == 0)
+                {
+                    moves.push_back(ChessBoard(*this).makeMove(team, Piece::PAWN,
+                        current_index, double_push_pos));
+                }
             }
         }
         pawns_to_move = LS1BReset(pawns_to_move);

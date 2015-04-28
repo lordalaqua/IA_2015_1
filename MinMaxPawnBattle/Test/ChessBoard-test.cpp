@@ -2,6 +2,8 @@
 #include "ChessBoard.hpp"
 #include <iostream>
 
+/* TODO: Tests need to test border cases better!!!!*/
+
 TEST(ChessBoardInitializeTest)
 {
     std::string board_str =
@@ -49,6 +51,9 @@ TEST(ChessBoardCountingTest)
     CHECK(board.countPieces(Piece::WHITE) == 13);
 }
 
+//TODO: 
+// -- pawn in left and right edges with capturable pawn if captures would overflow
+// -- Pawn in last row
 TEST(WhitePawnMoveGenerationTest)
 {
     std::string board_str =
@@ -169,6 +174,7 @@ TEST(BlackPawnMoveGenerationTest)
         CHECK(found[i]); // Check if all desired results were found
     }
 }
+
 
 TEST(KnightMoveGenerationTest)
 {

@@ -18,6 +18,9 @@ namespace Piece
     };
 
     inline Color otherTeam(Color t) { return t == BLACK ? WHITE : BLACK; }
+
+    // Converts LiacChess team to Piece::Color value
+    inline Color findTeam(int t) { return (t == 1) ? WHITE : BLACK; }
 };
 
 #endif // Piece_h__

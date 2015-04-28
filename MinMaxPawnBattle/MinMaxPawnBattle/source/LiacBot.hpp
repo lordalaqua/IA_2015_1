@@ -27,8 +27,7 @@ private:
 // Pure virtual methods
     virtual void onMove(BoardState state) = 0;
     virtual void onGameOver(BoardState state) = 0;
-// Private Methods
-    
+// Private Methods    
     bool sendName();
     bool receiveState();
     bool connectTCPSocket(int server_port, std::string server_ip, int client_port = LiacBot::DEFAULT_CLIENT);

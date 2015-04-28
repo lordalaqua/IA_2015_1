@@ -46,7 +46,7 @@ void BoardState::parse(std::string json)
                 std::getline(ss, board, '\"');
             }
             else if (name == "enpassant")
-            {
+            {/*
                 std::getline(ss, value, ',');
                 if (value.find_first_of('[') == std::string::npos) // no braces in field, is null
                 {
@@ -54,9 +54,13 @@ void BoardState::parse(std::string json)
                 }                 
                 else // found opening brace, it is a list
                 {
+                    bool list = false;
+                    std::string v((value.begin()+value.find_first_of('[') + 1), value.end());
+                    if (v.find_first_of('[') == std::string::npos)
+                        list = true;
                     std::pair<int, int> coord;
 
-                    /* Read first element */
+                    // Read first element
                     coord.first = atoi(trimNotNumber(value).c_str());
                     std::getline(ss, value, ']');
                     coord.second = atoi(trimNotNumber(value).c_str());
@@ -64,7 +68,7 @@ void BoardState::parse(std::string json)
 
                     while (true)
                     {
-                        /* Keep reading while there are new elements*/
+                        // Keep reading while there are new elements
                         std::getline(ss, value, ',');
                         if (value.find_first_of(']') == std::string::npos) 
                         {
@@ -78,7 +82,7 @@ void BoardState::parse(std::string json)
                         else
                             break; // Closing brace found, list finished
                     }
-                }
+                }*/
             }
             else // booleans or numbers
             {
