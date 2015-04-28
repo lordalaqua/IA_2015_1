@@ -1,6 +1,6 @@
 #ifndef LIACBOT_HPP_
 #define LIACBOT_HPP_
-
+#define NOMINMAX
 #include <winsock2.h>
 #include <string>
 #include <sstream>

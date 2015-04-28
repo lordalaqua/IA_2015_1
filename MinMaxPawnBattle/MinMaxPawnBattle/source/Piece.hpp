@@ -20,7 +20,8 @@ namespace Piece
     inline Color otherTeam(Color t) { return t == BLACK ? WHITE : BLACK; }
 
     // Converts LiacChess team to Piece::Color value
-    inline Color findTeam(int t) { return (t == 1) ? WHITE : BLACK; }
+    inline Color intToColor(int t) { return (t == 1) ? WHITE : BLACK; }
+    inline int colorToInt(Color c) { return (c == WHITE) ? 1 : -1; }
 };
 
 #endif // Piece_h__

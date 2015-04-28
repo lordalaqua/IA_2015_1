@@ -12,21 +12,25 @@
 class ChessBoard
 {
 public:
+    ChessBoard() {};
     ChessBoard(const ChessBoard& other);
     ChessBoard(const std::string& board);
-    std::vector<ChessBoard> generateMoves(Piece::Color team);
-    int materialEvaluation(Piece::Color team);
+    std::vector<ChessBoard> generateMoves(Piece::Color team) const;
+    int materialEvaluation(Piece::Color team, int queen_weight = 9,
+        int knight_weight = 3, int pawn_weight = 1) const;
+    int positionEvaluation(Piece::Color team) const;
+    int endGameTest() const;
     const std::bitset<64>& operator()(Piece::Color color, Piece::Type type) const;
     std::bitset<64> operator()(Piece::Color color) const;
-    int countPieces(Piece::Color color, Piece::Type type);
-    int countPieces(Piece::Color color);
+    int countPieces(Piece::Color color, Piece::Type type) const;
+    int countPieces(Piece::Color color) const;
     std::bitset<64> occupied() const;
-    const std::pair<int, int>& from() { return from_; }
-    const std::pair<int, int>& to() { return to_; }
+    std::pair<int, int> from() const { return from_; }
+    std::pair<int, int> to() const { return to_; }
 private:
-    void generatePawnMoves(Piece::Color team, std::vector<ChessBoard>& moves);
-    void generateKnightMoves(Piece::Color team, std::vector<ChessBoard>& moves);
-    void generateQueenMoves(Piece::Color team, std::vector<ChessBoard>& moves);
+    void generatePawnMoves(Piece::Color team, std::vector<ChessBoard>& moves) const;
+    void generateKnightMoves(Piece::Color team, std::vector<ChessBoard>& moves) const;
+    void generateQueenMoves(Piece::Color team, std::vector<ChessBoard>& moves) const;
     ChessBoard& makeMove(Piece::Color team, Piece::Type type, int from, int to);
     ChessBoard& makeCapture(Piece::Color team, Piece::Type type, int from, int to);
     void setFromTo(int from, int to);

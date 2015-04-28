@@ -62,7 +62,7 @@ ChessBoard::ChessBoard(const std::string& board)
     to_ = from_;
 }
 
-int ChessBoard::countPieces(Piece::Color color, Piece::Type type)
+int ChessBoard::countPieces(Piece::Color color, Piece::Type type) const
 {
     uint64 pieces = board_[color][type].to_ullong();
     int count = 0;
@@ -75,7 +75,7 @@ int ChessBoard::countPieces(Piece::Color color, Piece::Type type)
     return count;
 }
 
-int ChessBoard::countPieces(Piece::Color color)
+int ChessBoard::countPieces(Piece::Color color) const
 {
     int count = 0;
     for (int i = 0; i < Piece::NUM_TYPES; ++i)
@@ -111,7 +111,7 @@ std::bitset<64> ChessBoard::occupied() const
     return result;
 }
 
-std::vector<ChessBoard> ChessBoard::generateMoves(Piece::Color team)
+std::vector<ChessBoard> ChessBoard::generateMoves(Piece::Color team) const
 {
     std::vector<ChessBoard> moves;
     generatePawnMoves(team, moves);
@@ -120,7 +120,7 @@ std::vector<ChessBoard> ChessBoard::generateMoves(Piece::Color team)
     return moves;
 }
 
-void ChessBoard::generatePawnMoves(Piece::Color team, std::vector<ChessBoard>& moves)
+void ChessBoard::generatePawnMoves(Piece::Color team, std::vector<ChessBoard>& moves) const
 {
     std::bitset<64> occupied_tiles = occupied();
     std::bitset<64> enemy_tiles = (*this)(Piece::otherTeam(team));
@@ -185,7 +185,7 @@ void ChessBoard::generatePawnMoves(Piece::Color team, std::vector<ChessBoard>& m
     }
 }
 
-void ChessBoard::generateKnightMoves(Piece::Color team, std::vector<ChessBoard>& moves)
+void ChessBoard::generateKnightMoves(Piece::Color team, std::vector<ChessBoard>& moves) const
 {
     std::bitset<64> occupied_tiles = occupied();
     std::bitset<64> enemy_tiles = (*this)(Piece::otherTeam(team));
@@ -221,7 +221,7 @@ void ChessBoard::generateKnightMoves(Piece::Color team, std::vector<ChessBoard>&
     }
 }
 
-void ChessBoard::generateQueenMoves(Piece::Color team, std::vector<ChessBoard>& moves)
+void ChessBoard::generateQueenMoves(Piece::Color team, std::vector<ChessBoard>& moves) const
 {
     std::bitset<64> occupied_tiles = occupied();
     std::bitset<64> enemy_tiles = (*this)(Piece::otherTeam(team));
@@ -291,15 +291,59 @@ void ChessBoard::setFromTo(int from, int to)
     to_.second = to % 8;
 }
 
-int ChessBoard::materialEvaluation(Piece::Color team)
+
+int ChessBoard::materialEvaluation(Piece::Color team, int queen_weight /*= 9*/, 
+    int knight_weight /*= 3*/, int pawn_weight /*= 1*/) const
 {
     Piece::Color other_team = Piece::otherTeam(team);
-    const int queen_weight = 9, knight_weight = 3, pawn_weight = 1;
     int score =
         queen_weight * (countPieces(team, Piece::QUEEN) - countPieces(other_team, Piece::QUEEN)) +
         knight_weight * (countPieces(team, Piece::KNIGHT) - countPieces(other_team, Piece::KNIGHT)) +
         pawn_weight * (countPieces(team, Piece::PAWN) - countPieces(other_team, Piece::PAWN));
     return score;
+}
+
+int ChessBoard::positionEvaluation(Piece::Color team) const
+{
+    uint64 score = 0;
+    if (team == Piece::WHITE)
+    {
+        //Send pawns forward, reward higher positions
+        score += (*this)(Piece::WHITE, Piece::PAWN).to_ullong();
+        // Don't let Knights stray too much
+        score -= (*this)(Piece::WHITE, Piece::KNIGHT).to_ullong() / 2;
+        // Keep Queen in the back
+        score -= (*this)(Piece::WHITE, Piece::QUEEN).to_ullong() * 4;
+    }
+    else // BLACK
+    {
+
+        //Send pawns forward, reward higher positions
+        score += 71776119061217280 - (*this)(Piece::BLACK, Piece::PAWN).to_ullong();
+        // Don't let Knights stray too much
+        score -= 4755801206503243776 - (*this)(Piece::BLACK, Piece::KNIGHT).to_ullong() / 2;
+        // Keep Queen in the back
+        score -= 1152921504606846976 - (*this)(Piece::BLACK, Piece::QUEEN).to_ullong() * 4;
+    }
+    int result = (score / 4294967296) - 1;
+    return result;
+}
+
+int ChessBoard::endGameTest() const
+{
+    uint64 white_pawns = (*this)(Piece::WHITE, Piece::PAWN).to_ullong();
+    uint64 black_pawns = (*this)(Piece::WHITE, Piece::PAWN).to_ullong();
+
+    // black win
+    if ( (LS1B(black_pawns) < 256) || white_pawns == 0)
+    {
+        return Piece::colorToInt(Piece::BLACK);
+    }
+    if (white_pawns > 72057594037927936 || black_pawns == 0)
+    {
+        return Piece::colorToInt(Piece::WHITE);
+    }
+    return 0;
 }
 
 

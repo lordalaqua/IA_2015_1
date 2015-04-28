@@ -12,11 +12,11 @@ RandomBot::RandomBot() : LiacBot()
 void RandomBot::onMove(BoardState state)
 {
     ChessBoard board(state.board);
-    Piece::Color team = Piece::findTeam(state.who_moves);
-    auto moves = board.generateMoves(team); // generate all possible moves
+    team_ = Piece::intToColor(state.who_moves);
+    auto moves = board.generateMoves(team_); // generate all possible moves
 
     // Print debug messages
-    int infractions = team == Piece::WHITE ? state.white_infractions : state.black_infractions;    
+    int infractions = team_ == Piece::WHITE ? state.white_infractions : state.black_infractions;    
     std::cout << moves.size() << " moves," << infractions << " infractions" << std::endl;
 
     // Print board
@@ -46,10 +46,9 @@ void RandomBot::onMove(BoardState state)
 
 void RandomBot::onGameOver(BoardState state)
 {
-    Piece::Color team = Piece::findTeam(state.who_moves);
     if (state.draw)
         std::cout << "DRAW! Boooring!" << std::endl;
-    else if (Piece::findTeam(state.winner) == team)
+    else if (Piece::intToColor(state.winner) == team_)
         std::cout << "YOU RANDOMLY WON! CONGRATULATIONS!" << std::endl;
     else
         std::cout << "YOU LOSE! It's random anyway..." << std::endl;

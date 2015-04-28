@@ -1,16 +1,31 @@
 #include <iostream>
+#include "FirstBot.hpp"
 #include "RandomBot.hpp"
+
 
 int main(int argc, char** argv)
 {
     int port = 50100;
-    std::string name = "TestBot";
+    int depth = 3;
+    std::string name = "LordBot";
     if (argc > 1)
     {
         port = atoi(argv[1]);
-        if (argc > 2) 
-            name = argv[2];
+        if (argc > 2)
+        {
+            depth = atoi(argv[2]);
+            if (argc > 3)
+                name = argv[3];
+        }
     }
-    RandomBot bot;
-    bot.run(name, port);
+    if (name == "random")
+    {
+        RandomBot bot;
+        bot.run("RandomBot", port);
+    }
+    else
+    {
+        FirstBot bot(depth);
+        bot.run(name, port);
+    }    
 }
