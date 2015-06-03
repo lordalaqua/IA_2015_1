@@ -24,17 +24,17 @@ void FirstBot::onGameOver(BoardState state)
 
 FirstBot::Play FirstBot::negamax(const ChessBoard& node, int depth, int color, Piece::Color root_team, int alpha, int beta)
 {
-    /*int end = node.endGameTest();
+    int end = node.endGameTest();
     if (end != 0)
     {
         if (Piece::intToColor(end) == root_team)
             return Play(INF, node.from(), node.to());
         else
             return Play(-INF, node.from(), node.to());
-    }*/ // For some reason this generates invalid moves sometimes, check!
+     } // For some reason this generates invalid moves sometimes, check!
     if (depth == 0)
     {
-        return Play(color*(10*node.materialEvaluation(root_team) +
+        return Play(color*(50 * node.materialEvaluation(root_team) +
             node.positionEvaluation(root_team)), node.from(), node.to());
     }
     // Calculate possible moves

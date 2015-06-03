@@ -1,7 +1,10 @@
-*** sobre o arquivo usps.csv ***
-O arquivo data/usps.csv contém o dataset USPS completo com 9298 linhas/amostras e 256 colunas/pixels mais 1 coluna com o rotulo de classe.
-Os rótulos de classe (última coluna) em usps.csv assumem valores de 0 a 9.
+O Arquivo NBClassifier.py deve ser executado com o seguinte comando:
 
-*** sobre os arquivos no diretorio indices ***
-Cada arquivo no diretorio indices está destinado a um aluno (especificado pelo professor). Cada linha desse arquivo se refere a um indice/linha do arquivo usps.csv. Os indices (5000 no total) devem ser utilizados pelo aluno para montar seu proprio subconjunto de dados para treinamento e avaliacao na tarefa de classificacao de digitos usando o Naive Bayes.
+python NBClassifier.py
 
+Nota-se que o arquivo deve estar no mesmo diretório que as pastas "data/" e "indices/" como fornecido na tarefa.
+
+Os requisitos para funcionamento são uma instalação de interpretador python versão 3.4 e a biblioteca Numpy.
+
+Peço desculpas por não fornecer um executável pois houveram problemas na geração do mesmo,
+mas imagino que Python sendo a linguagem recomendada haja um interpretador disponível para a correção.

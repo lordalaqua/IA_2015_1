@@ -293,13 +293,13 @@ void ChessBoard::setFromTo(int from, int to)
 
 
 int ChessBoard::materialEvaluation(Piece::Color team, int queen_weight /*= 9*/, 
-    int knight_weight /*= 3*/, int pawn_weight /*= 1*/) const
+    int knight_weight /*= 3*/, int pawn_weight /*= 3*/) const
 {
     Piece::Color other_team = Piece::otherTeam(team);
     int score =
-        queen_weight * (countPieces(team, Piece::QUEEN) - countPieces(other_team, Piece::QUEEN)) +
-        knight_weight * (countPieces(team, Piece::KNIGHT) - countPieces(other_team, Piece::KNIGHT)) +
-        pawn_weight * (countPieces(team, Piece::PAWN) - countPieces(other_team, Piece::PAWN));
+        queen_weight * (countPieces(team, Piece::QUEEN) - 5*countPieces(other_team, Piece::QUEEN)) +
+        knight_weight * (countPieces(team, Piece::KNIGHT) -  5*countPieces(other_team, Piece::KNIGHT)) +
+        pawn_weight * (countPieces(team, Piece::PAWN) -  5*countPieces(other_team, Piece::PAWN));
     return score;
 }
 
@@ -310,20 +310,15 @@ int ChessBoard::positionEvaluation(Piece::Color team) const
     {
         //Send pawns forward, reward higher positions
         score += (*this)(Piece::WHITE, Piece::PAWN).to_ullong();
-        // Don't let Knights stray too much
-        score -= (*this)(Piece::WHITE, Piece::KNIGHT).to_ullong() / 2;
-        // Keep Queen in the back
-        score -= (*this)(Piece::WHITE, Piece::QUEEN).to_ullong() * 4;
+        score -= 18446744073709551615 - (*this)(Piece::BLACK, Piece::PAWN).to_ullong();
     }
     else // BLACK
     {
 
         //Send pawns forward, reward higher positions
-        score += 71776119061217280 - (*this)(Piece::BLACK, Piece::PAWN).to_ullong();
-        // Don't let Knights stray too much
-        score -= 4755801206503243776 - (*this)(Piece::BLACK, Piece::KNIGHT).to_ullong() / 2;
-        // Keep Queen in the back
-        score -= 1152921504606846976 - (*this)(Piece::BLACK, Piece::QUEEN).to_ullong() * 4;
+        score += 18446744073709551615 - (*this)(Piece::BLACK, Piece::PAWN).to_ullong();
+        score += (*this)(Piece::WHITE, Piece::PAWN).to_ullong();
+       
     }
     int result = (score / 4294967296) - 1;
     return result;
@@ -335,11 +330,11 @@ int ChessBoard::endGameTest() const
     uint64 black_pawns = (*this)(Piece::WHITE, Piece::PAWN).to_ullong();
 
     // black win
-    if ( (LS1B(black_pawns) < 256) || white_pawns == 0)
+    if ( /*(LS1B(black_pawns) < 256) ||*/ white_pawns == 0)
     {
         return Piece::colorToInt(Piece::BLACK);
     }
-    if (white_pawns > 72057594037927936 || black_pawns == 0)
+    if (/*white_pawns > 72057594037927936 ||*/ black_pawns == 0)
     {
         return Piece::colorToInt(Piece::WHITE);
     }

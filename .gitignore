@@ -1,5 +1,7 @@
 # Ignore liac-chess folder
 liac-chess/
+*.csv
+*.pdf
 
 
 ## Ignore Visual Studio temporary files, build results, and

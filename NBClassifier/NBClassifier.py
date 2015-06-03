@@ -1,11 +1,7 @@
 #                   Classificador Naive Bayes 
 #                   Lorenzo Pezzi Dal'Aqua
-#                   
-# 
-# 
-# 
-# 
-#
+#                   Inteligência Artificial
+#                       Turma U - 2015/1
 import csv
 from numpy import *
 
@@ -42,6 +38,10 @@ complete_set = array(lines)[indices]
 validation_len = int(len(complete_set)/NUM_CLASSES);
 
 avg_confusion_matrix = zeros((NUM_CLASSES,NUM_CLASSES))
+avg_matches = 0
+avg_precision = zeros((NUM_CLASSES,1))
+avg_recall = zeros((NUM_CLASSES,1))
+avg_f_measure = zeros((NUM_CLASSES,1))
 # Realizar o 10-fold cross-validation
 for k in range(NUM_CLASSES):
     # =========================== Divisão dos dados ============================
@@ -82,7 +82,10 @@ for k in range(NUM_CLASSES):
 
 
     # ===================== Classificação por MAP ==============================
-    confusion_matrix = zeros((NUM_CLASSES,NUM_CLASSES))
+    # 
+    confusion_matrix = zeros((NUM_CLASSES,NUM_CLASSES),dtype=int8)
+    matches = 0
+
     # Testa com todos os dados de validação
     for input_index in range(validation_len):
         max_sum = 0
@@ -97,20 +100,46 @@ for k in range(NUM_CLASSES):
             if s > max_sum:
                 max_sum = s;
                 index = i
-        # Computa os matches corretos
+        # Popula a matriz de confusão da iteração atual
         confusion_matrix[validation_set[input_index][-1]][index] += 1
-    #print(confusion_matrix)
-    avg_confusion_matrix += confusion_matrix
+        if validation_set[input_index][-1] == index :
+            matches += 1
 
+    print(">>>>>>>> Iteration",k,"<<<<<<<<<")
+    print(matches,"matches out of ",validation_len, matches/validation_len, "accuracy")
+    print(confusion_matrix)
+    # Calcula as métricas de precisão e recall para cada classe    
+    for i in range(NUM_CLASSES):
+        precision_sum = 0
+        recall_sum = 0
+        for j in range(NUM_CLASSES):
+            precision_sum += confusion_matrix[j,i]
+            recall_sum += confusion_matrix[i,j]
+        precision = confusion_matrix[i,i]/precision_sum
+        recall = confusion_matrix[i,i]/recall_sum
+        f_measure = 2*recall*precision/(recall+precision)
+        # Acumula as métricas para calcular as médias
+        avg_precision[i] += precision
+        avg_recall[i] += recall
+        avg_f_measure += f_measure
+        # Exibe as métricas calculadas para cada classe
+        print("Class",i,"Precision",precision,"Recall",recall,"F_measure",f_measure)
+    # Soma todas matrizes de confusão para calcular a média
+    avg_confusion_matrix += confusion_matrix
+    avg_matches += matches
+# Divide a soma das matrizes pelo número de classes
 avg_confusion_matrix /= NUM_CLASSES
-print(avg_confusion_matrix)    
-for i in range(NUM_CLASSES):
-    precision_sum = 0
-    recall_sum = 0
-    for j in range(NUM_CLASSES):
-        precision_sum += avg_confusion_matrix[j,i]
-        recall_sum +=avg_confusion_matrix[i,j]
-    precision = avg_confusion_matrix[i,i]/precision_sum
-    recall = avg_confusion_matrix[i,i]/recall_sum
-    f_measure = 2*recall*precision/(recall+precision)
-    print("Class",i,"Precision",precision,"Recall",recall,"F_measure",f_measure)
+avg_matches /= NUM_CLASSES
+
+# Exibe a matriz resultante
+print(">>>>>>>> FINAL RESULTS <<<<<<<<<")
+print(avg_matches,"matches out of ",validation_len,"in average", matches/validation_len, "accuracy")
+print("Average Confusion Matrix")
+print(avg_confusion_matrix)
+avg_precision = avg_precision / NUM_CLASSES
+avg_recall = avg_recall / NUM_CLASSES
+avg_f_measure = avg_f_measure / NUM_CLASSES
+for i in range(NUM_CLASSES):    
+    # Exibe as métricas médias calculadas
+    print("Class",i,"Precision",avg_precision[i],"Recall",avg_recall[i],"F_measure",avg_f_measure[i])
+
