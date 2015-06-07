@@ -31,10 +31,10 @@ FirstBot::Play FirstBot::negamax(const ChessBoard& node, int depth, int color, P
             return Play(INF, node.from(), node.to());
         else
             return Play(-INF, node.from(), node.to());
-     } // For some reason this generates invalid moves sometimes, check!
+    } // For some reason this generates invalid moves sometimes, check!
     if (depth == 0)
     {
-        return Play(color*(50 * node.materialEvaluation(root_team) +
+        return Play(color*(10*node.materialEvaluation(root_team) +
             node.positionEvaluation(root_team)), node.from(), node.to());
     }
     // Calculate possible moves
@@ -45,7 +45,7 @@ FirstBot::Play FirstBot::negamax(const ChessBoard& node, int depth, int color, P
         moves = node.generateMoves(Piece::otherTeam(root_team));
     if (moves.size() == 0)
     {
-        return Play(color*(10*node.materialEvaluation(root_team) +
+        return Play(color*10*(node.materialEvaluation(root_team) +
             node.positionEvaluation(root_team)), node.from(), node.to());
     }
 

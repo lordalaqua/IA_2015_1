@@ -25,7 +25,7 @@ private:
 private:
     Piece::Color team_;
     int depth_;
-    const int INF = std::numeric_limits<int>::max()-1;
+    const int INF = std::numeric_limits<int>::max();
 };
 
 

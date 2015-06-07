@@ -6,7 +6,7 @@
 int main(int argc, char** argv)
 {
     int port = 50100;
-    int depth = 5;
+    int depth = 3;
     std::string name = "LordBot";
     if (argc > 1)
     {

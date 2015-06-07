@@ -293,34 +293,73 @@ void ChessBoard::setFromTo(int from, int to)
 
 
 int ChessBoard::materialEvaluation(Piece::Color team, int queen_weight /*= 9*/, 
-    int knight_weight /*= 3*/, int pawn_weight /*= 3*/) const
+    int knight_weight /*= 3*/, int pawn_weight /*= 1*/) const
 {
     Piece::Color other_team = Piece::otherTeam(team);
     int score =
-        queen_weight * (countPieces(team, Piece::QUEEN) - 5*countPieces(other_team, Piece::QUEEN)) +
-        knight_weight * (countPieces(team, Piece::KNIGHT) -  5*countPieces(other_team, Piece::KNIGHT)) +
-        pawn_weight * (countPieces(team, Piece::PAWN) -  5*countPieces(other_team, Piece::PAWN));
+        queen_weight * (countPieces(team, Piece::QUEEN) - countPieces(other_team, Piece::QUEEN)) +
+        knight_weight * (countPieces(team, Piece::KNIGHT) - countPieces(other_team, Piece::KNIGHT)) +
+        pawn_weight * (countPieces(team, Piece::PAWN) - countPieces(other_team, Piece::PAWN));
     return score;
 }
 
 int ChessBoard::positionEvaluation(Piece::Color team) const
 {
-    uint64 score = 0;
-    if (team == Piece::WHITE)
+	uint64 score = 0;
+	uint64 firstRow = 255;
+	uint64 secondRow = 65280;
+	uint64 thirdRow = 16711680;
+	uint64 fourthRow = 4278190080;
+	uint64 fifthRow = 1095216660480;
+	uint64 sixthRow = 280375465082880;
+	uint64 seventhRow = 71776119061217280;
+	uint64 eightRow = 9151314442816847872;
+	
+    
+	if (team == Piece::WHITE)
     {
-        //Send pawns forward, reward higher positions
-        score += (*this)(Piece::WHITE, Piece::PAWN).to_ullong();
-        score -= 18446744073709551615 - (*this)(Piece::BLACK, Piece::PAWN).to_ullong();
+		if (((*this)(Piece::WHITE, Piece::PAWN).to_ullong() & firstRow) != 0)
+			score += 1;
+		if (((*this)(Piece::WHITE, Piece::PAWN).to_ullong() & secondRow) != 0)
+			score += 2;
+		if (((*this)(Piece::WHITE, Piece::PAWN).to_ullong() & thirdRow) != 0)
+			score += 3;
+		if (((*this)(Piece::WHITE, Piece::PAWN).to_ullong() & fourthRow) != 0)
+			score += 4;
+		if (((*this)(Piece::WHITE, Piece::PAWN).to_ullong() & fifthRow) != 0)
+			score += 5;
+		if (((*this)(Piece::WHITE, Piece::PAWN).to_ullong() & sixthRow) != 0)
+			score += 6;
+		if (((*this)(Piece::WHITE, Piece::PAWN).to_ullong() & seventhRow) != 0)
+			score += 7;
+		if (((*this)(Piece::WHITE, Piece::PAWN).to_ullong() & eightRow) != 0){
+			printf("LINHA DE CHEGADA");
+			score += 20;
+		}
+		
+		
     }
     else // BLACK
     {
-
-        //Send pawns forward, reward higher positions
-        score += 18446744073709551615 - (*this)(Piece::BLACK, Piece::PAWN).to_ullong();
-        score += (*this)(Piece::WHITE, Piece::PAWN).to_ullong();
+		if (((*this)(Piece::BLACK, Piece::PAWN).to_ullong() & eightRow) != 0)
+			score += 1;
+		if (((*this)(Piece::BLACK, Piece::PAWN).to_ullong() & seventhRow) != 0)
+			score += 2;
+		if (((*this)(Piece::BLACK, Piece::PAWN).to_ullong() & sixthRow) != 0)
+			score += 3;
+		if (((*this)(Piece::BLACK, Piece::PAWN).to_ullong() & fifthRow) != 0)
+			score += 4;
+		if (((*this)(Piece::BLACK, Piece::PAWN).to_ullong() & fourthRow) != 0)
+			score += 5;
+		if (((*this)(Piece::BLACK, Piece::PAWN).to_ullong() & thirdRow) != 0)
+			score += 6;
+		if (((*this)(Piece::BLACK, Piece::PAWN).to_ullong() & secondRow) != 0)
+			score += 7;
+		if (((*this)(Piece::BLACK, Piece::PAWN).to_ullong() & firstRow) != 0)
+			score += 20;
        
     }
-    int result = (score / 4294967296) - 1;
+    int result = score ;
     return result;
 }
 
@@ -328,13 +367,14 @@ int ChessBoard::endGameTest() const
 {
     uint64 white_pawns = (*this)(Piece::WHITE, Piece::PAWN).to_ullong();
     uint64 black_pawns = (*this)(Piece::WHITE, Piece::PAWN).to_ullong();
-
+    uint64 firstRow = 255;
+    uint64 eightRow = 9151314442816847872;
     // black win
-    if ( /*(LS1B(black_pawns) < 256) ||*/ white_pawns == 0)
+    if ( black_pawns & firstRow || white_pawns == 0)
     {
         return Piece::colorToInt(Piece::BLACK);
     }
-    if (/*white_pawns > 72057594037927936 ||*/ black_pawns == 0)
+    if (white_pawns & eightRow || black_pawns == 0)
     {
         return Piece::colorToInt(Piece::WHITE);
     }

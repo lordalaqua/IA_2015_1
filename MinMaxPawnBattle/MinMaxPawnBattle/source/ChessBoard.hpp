@@ -16,8 +16,8 @@ public:
     ChessBoard(const ChessBoard& other);
     ChessBoard(const std::string& board);
     std::vector<ChessBoard> generateMoves(Piece::Color team) const;
-    int materialEvaluation(Piece::Color team, int queen_weight = 1,
-        int knight_weight = 1, int pawn_weight = 5) const;
+    int materialEvaluation(Piece::Color team, int queen_weight = 9,
+        int knight_weight = 3, int pawn_weight = 1) const;
     int positionEvaluation(Piece::Color team) const;
     int endGameTest() const;
     const std::bitset<64>& operator()(Piece::Color color, Piece::Type type) const;
